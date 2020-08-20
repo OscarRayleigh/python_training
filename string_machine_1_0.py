@@ -1,6 +1,6 @@
 # Write a Python program to create //
 # all possible strings by using a few char
-
+# this code doesnt work
 import random
 import math
 from collections import Counter
