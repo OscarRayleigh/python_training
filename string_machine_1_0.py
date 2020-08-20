@@ -1,21 +1,34 @@
 # Write a Python program to create //
 # all possible strings by using a few char
-# this code doesnt work
+
 import random
 import math
 from collections import Counter
+import os
+user_data = input("Just smash your keyboard !\n")
 
 
-char_list = ['a', 'e', 'y', 'o']
-cool_list = []
-final_output = 0
+def cls():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+cls()
+
 
 x = 0
-rep = dict(Counter(char_list))
-print("Total of occurences : ")
+final_output = 0
+cool_list = []
 unic_char_list = []
 rep_char = {}
 foo = {}
+i = 0
+char_list = []
+char_list[:] = user_data
+maximum = math.factorial(len(char_list))
+rep = dict(Counter(char_list))
+
+print("--------------------------- Total of repetitions --------------------------- ")
+
 while x < len(char_list):
     print("Occurence of", char_list[x], "is %s" % rep.get(char_list[x]))
     if char_list[x] not in unic_char_list:
@@ -26,13 +39,13 @@ while x < len(char_list):
             foo.update(rep_char)
     x += 1
 print("Unique char : ", unic_char_list)
-print("Char repeated more than once following the synthax char:occurence = ", foo)
-maximum = math.factorial(len(char_list))
+print("Characters repeated more than once following the synthax char:occurence = ", foo)
 for k in foo.keys():
     maximum //= math.factorial(foo[k])
+print("Combinaisons with the given characters =  ", maximum)
 
-print("maximum =  ", maximum)
-i = 0
+
+
 while i < maximum:
     words = ""
     random.shuffle(char_list)
@@ -41,9 +54,7 @@ while i < maximum:
         continue
     if words not in cool_list:
         cool_list.append(words)
-        #final_output -= 1
         print(cool_list[final_output])
         i += 1
-    final_output += 1
-    print(i)
-print(maximum)
+    final_output += 1 
+
