@@ -1,3 +1,7 @@
+# This program evaluate is an input contain integer greater than x which is also
+# defined be the user
+
+
 import re
 
 def greater_than_x():
