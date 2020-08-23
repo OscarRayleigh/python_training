@@ -10,7 +10,7 @@ print(prime_eratosthenes(int(input("n = "))))
 
 
 
-
+#Some old ugly code that doesnt really work
 #
 #
 # user_data = int(input("n = "))
