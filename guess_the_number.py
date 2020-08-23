@@ -2,20 +2,24 @@ from random import randrange
 
 def guess_the_number():
     didntguess = True
-    x = input("Let's choose n :")
-    while not (x.isdigit()):
-        x = input("Something wrong happened! Gimme n ! :")
+    n = input("Let's choose n :")
+    while not (n.isdigit()):
+        n = input("Something wrong happened! Gimme n ! :")
     tries = 1
-
-    sol = randrange(int(x))
+    sol = randrange(int(n))
     while didntguess:
         user_input = input("Guess the number ! :")
         while not (user_input.isdigit()):
             user_input = input("Something wrong happened! Guess the number ! :")
-        print("The n is :", sol)
         if sol == int(user_input):
             didntguess = True
-            print("You guess right in %d times !! GG ! or not ... ? idk i'm just a program lmao" % (tries))
+            if tries <= 2*int(int(n)**(1/3)):
+                print("Objectifs test ::   ", 2*int(int(n)**(1/3)))
+                print("You guessed right in %d times !! GG ! or not ... ? idk i'm just a program lmao" % (tries))
+            else:
+                print("Objectifs test ::   ", int(int(n)**(1/3)))
+                print("You guessed right in ... %d times ... You didnt win but you don't have to be ashamed" % (tries))
+            didntguess = True
             replay = input("Do you wanna play again ? y for yes and n for no : ")
             if replay.lower() == 'y' or replay.lower() == "yes":
                 guess_the_number()
@@ -35,4 +39,5 @@ print("n = 100 : You're a beginner\n")
 print("n = 1000 : Still quite easy lmao\n")
 print("n = 10000 : Alright men you have nothing to prove ...\n")
 print("n = 100000 : looks like you have time to loose \n")
+
 guess_the_number()
