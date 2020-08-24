@@ -11,15 +11,19 @@ def guess_the_number():
         user_input = input("Guess the number ! :")
         while not (user_input.isdigit()):
             user_input = input("Something wrong happened! Guess the number ! :")
-        if sol == int(user_input):
+        if sol > int(user_input):
+            print("Nah its higher !")
+            tries+=1
+        if sol < int(user_input):
+            print("its actually lower ...")
+            tries+=1
+        else:
             didntguess = True
             if tries <= 2*int(int(n)**(1/3)):
-                print("Objectifs test ::   ", 2*int(int(n)**(1/3)))
                 print("You guessed right in %d times !! GG ! or not ... ? idk i'm just a program lmao" % (tries))
             else:
-                print("Objectifs test ::   ", int(int(n)**(1/3)))
                 print("You guessed right in ... %d times ... You didnt win but you don't have to be ashamed" % (tries))
-            didntguess = True
+                didntguess = True
             replay = input("Do you wanna play again ? y for yes and n for no : ")
             if replay.lower() == 'y' or replay.lower() == "yes":
                 guess_the_number()
@@ -28,12 +32,7 @@ def guess_the_number():
             else:
                 print("I guess I didnt understand what you wrote, program's closing ! \n")
             break
-        if sol > int(user_input):
-            print("Nah its higher !")
-            tries+=1
-        if sol < int(user_input):
-            print("its actually lower ...")
-            tries+=1
+
 print(" Hi ! And welcome to my game ! You'll have guess a number between 0 and n and you choose n, you actually choose the difficulty ! \n")
 print("n = 100 : You're a beginner\n")
 print("n = 1000 : Still quite easy lmao\n")
