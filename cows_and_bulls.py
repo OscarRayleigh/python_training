@@ -9,21 +9,27 @@
 # the correct number, the game is over. Keep track of the
 # number of guesses the user makes throughout the game and
 # tell the user at the end.
+
 import random
 
-def cows_and_bulls():
-    str = input("Juste write a 4 digits number : \n")
-    if len(str) != 4:
+def verify_entry():
+    user_digits = input("Just write a 4 digits number \n")
+    if len(user_digits) != 4:
         print("We need EXACTLY 4 digits !")
-        cows_and_bulls()
-    if str.isdigit() == False:
+        user_digits = verify_entry()
+    if user_digits.isdigit() == False:
         print("I SAID DIGIT ! :\n")
-        cows_and_bulls()
-    solution = format(random.randint(0000,9999), '04d')
-    print(solution)
+        user_digits = verify_entry()
+    return user_digits
 
-#todo write a checker function
+def compare_digits(user_digits, solution):
+    print("Bulls = ", len(set(list(solution)) & set(list(user_digits))) )
 
-
+def cows_and_bulls():
+    user_digits = verify_entry()
+    solution =  "4043" #format(random.randint(0000,9999), '04d')
+    print("Solution = ", solution)
+    print("Entry = ", user_digits)
+    compare_digits(user_digits, solution)
 
 cows_and_bulls()
