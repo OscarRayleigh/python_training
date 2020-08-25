@@ -10,32 +10,42 @@
 # number of guesses the user makes throughout the game and
 # tell the user at the end.
 import random
-
-def verify_entry():
-    user_digits = input("Just write a 4 digits number \n")
-    if len(user_digits) != 4:
-        print("We need EXACTLY 4 digits !")
-        user_digits = verify_entry()
-    if user_digits.isdigit() == False:
-        print("I SAID DIGIT ! :\n")
-        user_digits = verify_entry()
-    return user_digits
-
-def compare_digits(user_digits, solution):
-    bulls = 0
-    cows = 0
-    for x in range(0,4):
-        if user_digits[x] == solution[x]:
-            cows += 1
-        elif user_digits[x] in solution:
-            bulls += 1
-    print("Bulls = ", bulls)
-    print("Cows = ", cows)
+solution = []
+def making_sol():
+    for i in range(4):
+        x = random.randrange(0,9)
+        solution.append(x)
+    if len(solution) > len(set(solution)):
+        solution.clear()
+        making_sol()
 
 def cows_and_bulls():
-    user_digits = verify_entry()
-    solution = "5641"#format(random.randint(0000,9999), '04d')
-    print("Solution = ", solution)
-    print("Entry = ", user_digits)
-    compare_digits(user_digits, solution)
+    bulls = 0
+    cows = 0
+    guess = []
+    user_digits = input("Just write a 4 digits number \n")
+
+    for i in range(4):
+        guess.append(int(user_digits[i]))
+    for i in range(4):
+        for j in range(4):
+            if guess[i] == solution[j]:
+                cows += 1
+
+    for x in range(4):
+        if (guess[x] == solution[x]):
+            bulls +=1
+    print("Bulls = ", bulls)
+    print("Cows = ", cows)
+    print("Solution =", solution)
+    if(bulls == 4):
+        print("You won bro ! ")
+    if(bulls != 4):
+        cows_and_bulls()
+# def old():
+#     user_digits = verify_entry()
+#     print("Solution = ", solution)
+#     print("Entry = ", user_digits)
+#     compare_digits(user_digits, solution)
+making_sol()
 cows_and_bulls()
