@@ -37,7 +37,7 @@ def bulls_and_cows():
     for char in user_digits:
       count = user_digits.count(char)
       if count > 1:
-          print("\n You just wrote a digit more than once ! \n")
+          print("\n Error ! You just wrote a DIGIT more than once ! \n")
           bulls_and_cows()
     tries += 1
     for i in range(4):
