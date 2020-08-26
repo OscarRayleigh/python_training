@@ -21,23 +21,22 @@ def create_account():
     if checker(username, password):
         f.write(username + ":" + password + "\n")
         print("\n Account succefully created ! ")
+        f.close()
         main()
     else:
         print("Something wrong happened, you must not use a comma in your password or username ")
         create_account()
 def login():
-    print("====Login====")
+    print("====Login==== \n \n")
 
     usernames = []
     passwords = []
     with open("login.txt", "r") as f:
         for line in f:
             fields = line.strip().split(":")
-            usernames.append(fields[0])  # read all the usernames into list usernames
-            passwords.append(fields[1])  # read all the passwords into passwords list
-
-            # Use a zip command to zip together the usernames and passwords to create a dict
-    userinfo = zip(usernames, passwords)  # this is a variable that contains the dictionary in the 2-tuple list form
+            usernames.append(fields[0])
+            passwords.append(fields[1])
+    userinfo = zip(usernames, passwords)
     userinfo_dict = dict(userinfo)
     print(userinfo_dict)
 
