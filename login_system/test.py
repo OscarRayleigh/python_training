@@ -1,25 +1,38 @@
-def login():
-    print("====Login====")
+from cryptography.fernet import Fernet
+#https://devqa.io/encrypt-decrypt-data-python/
+def generate_key():
+    """
+    Generates a key and save it into a file
+    """
+    key = Fernet.generate_key()
+    with open("secret.key", "wb") as key_file:
+        key_file.write(key)
 
-    usernames = []
-    passwords = []
-    with open("login.txt", "r") as f:
-        for line in f:
-            fields = line.strip().split(":")
-            usernames.append(fields[0])  # read all the usernames into list usernames
-            passwords.append(fields[1])  # read all the passwords into passwords list
+def load_key():
+    """
+    Load the previously generated key
+    """
+    return open("secret.key", "rb").read()
 
-            # Use a zip command to zip together the usernames and passwords to create a dict
-    userinfo = zip(usernames, passwords)  # this is a variable that contains the dictionary in the 2-tuple list form
-    userinfo_dict = dict(userinfo)
-    print(userinfo_dict)
+def encrypt_message(message):
+    """
+    Encrypts a message
+    """
+    key = load_key()
+    encoded_message = message.encode()
+    f = Fernet(key)
+    encrypted_message = f.encrypt(encoded_message)
 
-    username = input("Enter username:")
-    password = input("Enter password:")
+    print(encrypted_message)
+def decrypt_message(encrypted_message):
+    """
+    Decrypts an encrypted message
+    """
+    key = load_key()
+    f = Fernet(key)
+    decrypted_message = f.decrypt(encrypted_message)
 
-    if username in userinfo_dict.keys() and userinfo_dict[username] == password:
-        loggedin()
-    else:
-        print("Access Denied")
-        main()
-login()
+    print(decrypted_message.decode())
+
+if __name__ == "__main__":
+    encrypt_message("encrypt this message")
