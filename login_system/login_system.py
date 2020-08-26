@@ -16,18 +16,38 @@ def create_account():
     print("Creating account : \n")
     username = input("Username : ")
     password = input("Password :")
-    f.write(username + " : " + password + "\n")
-    print("\n Account succefully created ! ")
-    main()
+    if checker(username, password):
+        f.write(username + ":" + password + " ")
+        print("\n Account succefully created ! ")
+        main()
+    else:
+        print("Error, choose an username please ")
+        create_account()
 def login_account():
     username = input("Username : ")
     password = input("Password :")
-    dictionary = {}
-    with open("login.txt", "r") as file:
-        for line in file:
-            key, value = line.strip().split(":")
-            dictionary[key] = value
+    if checker(username, password):
+        verify_passwd(username, password)
+    else:
+        print("Error: You must choose an username ! (no space or no :) ")
+        login_account()
 
+def verify_passwd(username, password):
+    with open('login.txt','r') as f:
+        lines = f.readlines()
+        my_dict = {}
+        for line in lines:
+            line = line.split(" ")
+            print(line)
 
-
+        print(my_dict) #create a dict and add each lines in it,
+def checker(username, password):
+    if username == "":
+        return False
+    if " " in username or " " in password:
+        return False
+    if ":" in username or ":" in password:
+        return False
+    else:
+        return True
 main()
