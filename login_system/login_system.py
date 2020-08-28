@@ -29,12 +29,15 @@ def main():
         main()
 
 def create_account():
-    f = open("login.txt", "a")
     print("============ Creating account ============ \n")
     username = input("Username : ")
     password = getpass.getpass("Password : ")
+    if len(password) > 30 or len(username) > 16:
+        print("ERROR : Password or username too long ")
+        create_account()
     if username_is_available(username):
         if checker(username, password):
+            f = open("login.txt", "a")
             f.write(username + ":" + str(encrypt_password(password)) + "\n")
             print("\n Account succefully created !\n ")
             f.close()
@@ -74,7 +77,7 @@ def login():
         print("Something wrong happened, you wrote char that cannot be in your password ")
 
 def checker(username, password):
-    if "," in username or "," in password or " " in username or not password or not username:
+    if ":" in username or ":" in password or " " in username or not password or not username:
         return False
     else:
         return True
@@ -112,12 +115,12 @@ def username_is_available(username):
         else:
             return True
 def empty_database_checker():
-    if os.path.isfile('./login.txt') == False or os.stat("login.txt").st_size == 0:
+    if os.path.isfile('./login.txt') == False:
+        f = open("login.txt", "x")
+    elif os.stat("login.txt").st_size == 0:
         print("ERROR ! : Data base empty ... ")
         main()
-
-if os.path.isfile('./secret.key') == False:
-    generate_key()
+    f.close()
 
 print(r"""\
 
@@ -131,5 +134,7 @@ Welcome to :
 
     "A Very Not Secured Way to Manage Account"
                                                     """)
+if os.path.isfile('./secret.key') == False:
+    generate_key()
 
 main()
