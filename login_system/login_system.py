@@ -1,4 +1,6 @@
-import hashlib, os
+from cryptography.fernet import Fernet
+import ast
+
 def main():
     print("Do you want to create an account or to login ?: \n")
     a = input("1. To create an account or 2. to login, 3. To exit : ")
@@ -18,8 +20,7 @@ def create_account():
     username = input("Username : ")
     password = input("Password : ")
     if checker(username, password):
-        password_hash = hash_password(password)
-        f.write(username + ":" + password_hash + "\n")
+        f.write(username + ":" + str(encrypt_message(password)) + "\n")
         print("\n Account succefully created ! ")
         f.close()
         main()
@@ -39,11 +40,15 @@ def login():
     login_dict = dict(user_login)
     username = input("Enter username: ")
     password = input("Enter password: ")
+    txt_password = decrypt_message(login_dict[username])
+
     if checker(username, password):
-        if username in login_dict.keys() and login_dict[username] == password:
+        if username in login_dict.keys() and txt_password.decode() == password:
             loggedin()
         else:
             print("Access Denied\n")
+            print(txt_password)
+            print(password)
             login()
     else:
         print("Something wrong happened, you must not use a comma in your password nor in your username ")
@@ -53,12 +58,38 @@ def checker(username, password):
         return False
     else:
         return True
+
 def loggedin():
     print("You just logged in ! ")
-def hash_password(password):
-    password_salt = os.urandom(32).hex()
-    hash = hashlib.sha512()
-    hash.update(('%s%s' % (password_salt, password)).encode('utf-8'))
-    password_hash = hash.hexdigest()
-    return password_hash
+
+def generate_key():
+
+    key = Fernet.generate_key()
+    with open("secret.key", "wb") as key_file:
+        key_file.write(key)
+
+def load_key():
+
+    return open("secret.key", "rb").read()
+
+def encrypt_message(password):
+
+    key = load_key()
+    encoded_message = password.encode()
+    f = Fernet(key)
+    encrypted_message = f.encrypt(encoded_message)
+    return encrypted_message
+
+def decrypt_message(encrypted_password_str):
+
+    encrypted_password_byte = ast.literal_eval(encrypted_password_str)
+    key = load_key()
+    f = Fernet(key)
+    decrypted_password = f.decrypt(encrypted_password_byte)
+    return decrypted_password
+
+
+
+if input("Do you want to generate a new key ? ") == "y":
+    generate_key()
 main()
