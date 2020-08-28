@@ -1,32 +1,46 @@
 from cryptography.fernet import Fernet
 import ast
+import os.path
 
 def main():
-    print("Do you want to create an account or to login ?: \n")
-    a = input("1. To create an account or 2. to login, 3. To exit : ")
+    print("============ Main Menu ============ \n")
+    a = input(" 1. Create an account\n 2. Login \n 3. Reset keys \n 4. Exit \n")
     if a == "1":
         create_account()
     if a == "2":
         login()
     if a == "3":
-        print("Exiting ...")
-    elif a != "1" and a!= "2":
+        choice = input("Do you want to generate a new key ? y for yes : ")
+        if choice == "y":
+            os.remove("secret.key")
+            generate_key()
+            main()
+        else:
+            print("Back to main menu ... ")
+            main()
+    if a == "4":
+        print("See ya ...")
+        exit()
+    else:
         print("Something wrong happened ")
         main()
 
 def create_account():
     f = open("login.txt", "a")
-    print("Creating account : \n")
+    print("============ Creating account ============ \n")
     username = input("Username : ")
     password = input("Password : ")
-    if checker(username, password):
-        f.write(username + ":" + str(encrypt_message(password)) + "\n")
-        print("\n Account succefully created ! ")
-        f.close()
-        main()
+    if username_available(username):
+        if checker(username, password):
+            f.write(username + ":" + str(encrypt_message(password)) + "\n")
+            print("\n Account succefully created ! ")
+            f.close()
+            main()
+        else:
+            print("Something wrong happened, space and colon are not allowed in usernames and \n colon in password")
+            create_account()
     else:
-        print("Something wrong happened, you must not use a comma in your password or username ")
-        create_account()
+        print("Username already in use ! ")
 def login():
     print("============Login============ \n")
     usernames = []
@@ -44,23 +58,19 @@ def login():
 
     if checker(username, password):
         if username in login_dict.keys() and txt_password.decode() == password:
-            loggedin()
+            print("You just logged in ! Hello %s !!! " % (username))
+            exit()
         else:
             print("Access Denied\n")
-            print(txt_password)
-            print(password)
             login()
     else:
-        print("Something wrong happened, you must not use a comma in your password nor in your username ")
+        print("Something wrong happened, you wrote char that cant be in your password ")
 
 def checker(username, password):
-    if "," in username or "," in password:
+    if "," in username or "," in password or " " in username:
         return False
     else:
         return True
-
-def loggedin():
-    print("You just logged in ! ")
 
 def generate_key():
 
@@ -88,8 +98,17 @@ def decrypt_message(encrypted_password_str):
     decrypted_password = f.decrypt(encrypted_password_byte)
     return decrypted_password
 
+def username_available(username):
+    usernames = []
+    with open("login.txt", "r") as f:
+        for line in f:
+            fields = line.strip().split(":")
+            usernames.append(fields[0])
+        if username in usernames:
+            return False
+        else:
+            return True
 
-
-if input("Do you want to generate a new key ? ") == "y":
+if os.path.isfile('./secret.key') == False:
     generate_key()
 main()
