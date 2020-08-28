@@ -2,6 +2,7 @@ from cryptography.fernet import Fernet
 import ast
 import os.path
 import os
+import getpass
 
 def main():
     print("============ Main Menu ============ \n")
@@ -31,11 +32,11 @@ def create_account():
     f = open("login.txt", "a")
     print("============ Creating account ============ \n")
     username = input("Username : ")
-    password = input("Password : ")
+    password = getpass.getpass("Password : ")
     if username_is_available(username):
         if checker(username, password):
             f.write(username + ":" + str(encrypt_password(password)) + "\n")
-            print("\n Account succefully created ! ")
+            print("\n Account succefully created !\n ")
             f.close()
             main()
         else:
@@ -45,11 +46,9 @@ def create_account():
         print("Username already in use ! ")
 def login():
     print("============Login============ \n")
+    empty_database_checker()
     usernames = []
     passwords = []
-    if os.path.isfile('./login.txt') == False or os.stat("login.txt").st_size == 0:
-        print("ERROR ! : Account data base empty ... ")
-        main()
     f = open("login.txt", "r")
     for line in f:
         fields = line.strip().split(":")
@@ -59,9 +58,10 @@ def login():
     user_login = zip(usernames, passwords)
     login_dict = dict(user_login)
     username = input("Enter username: ")
-    password = input("Enter password: ")
-
-
+    password = getpass.getpass("Enter password: ")
+    if not username in usernames:
+        print("ERROR : Account not in database. ")
+        main()
     if checker(username, password):
         txt_password = decrypt_password(login_dict[username])
         if username in login_dict.keys() and txt_password.decode() == password:
@@ -111,7 +111,25 @@ def username_is_available(username):
             return False
         else:
             return True
+def empty_database_checker():
+    if os.path.isfile('./login.txt') == False or os.stat("login.txt").st_size == 0:
+        print("ERROR ! : Data base empty ... ")
+        main()
 
 if os.path.isfile('./secret.key') == False:
     generate_key()
+
+print(r"""\
+
+Welcome to :
+          _   _  _______          ____  __
+    /\   | \ | |/ ____\ \        / /  \/  |   /\
+   /  \  |  \| | (___  \ \  /\  / /| \  / |  /  \
+  / /\ \ | . ` |\___ \  \ \/  \/ / | |\/| | / /\ \
+ / ____ \| |\  |____) |  \  /\  /  | |  | |/ ____ \
+/_/    \_\_| \_|_____/    \/  \/   |_|  |_/_/    \_\
+
+    "A Very Not Secured Way to Manage Account"
+                                                    """)
+
 main()
