@@ -12,14 +12,14 @@ def main():
     if a == "2":
         login()
     if a == "3":
-        choice = input("Do you want to generate a new key ? Registered accounts will be lost \nPress y continue or anything else to abort : ")
+        choice = input("Do you want to generate a new key ? Registered accounts will be lost \nPress y continue or anything else to abord : ")
         if choice == "y":
-            os.remove("secret.key")
+            os.remove(".secret.key")
             os.remove("login.txt")
             print("Key succefully reset, old accounts are now lost !")
             exit()
         else:
-            print("Back to main menu ... ")
+            print("Abording ...")
             main()
     if a == "4":
         print("See ya ...")
@@ -84,11 +84,11 @@ def checker(username, password):
 
 def generate_key():
     key = Fernet.generate_key()
-    with open("secret.key", "wb") as key_file:
+    with open(".secret.key", "wb") as key_file:
         key_file.write(key)
 
 def load_key():
-    return open("secret.key", "rb").read()
+    return open(".secret.key", "rb").read()
 
 def encrypt_password(password):
     key = load_key()
@@ -117,9 +117,9 @@ def username_is_available(username):
 def database_checker():
     if os.path.isfile('./login.txt') == False:
         f = open("login.txt", "x")
-        print("Creating login.txt")
+        print("Creating login.txt ...")
         f.close()
-    if os.path.isfile('./secret.key') == False:
+    if os.path.isfile('./.secret.key') == False:
         print("Generating key ...")
         generate_key()
 print(r"""\
