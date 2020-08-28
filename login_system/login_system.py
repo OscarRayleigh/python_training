@@ -16,7 +16,6 @@ def main():
         if choice == "y":
             os.remove("secret.key")
             os.remove("login.txt")
-            generate_key()
             print("Key succefully reset, old accounts are now lost !")
             exit()
         else:
@@ -43,13 +42,12 @@ def create_account():
             f.close()
             main()
         else:
-            print("Something wrong happened, space and colon are not allowed in usernames and \n colon in password")
+            print("Something wrong happened ")
             create_account()
     else:
         print("Username already in use ! ")
 def login():
     print("============Login============ \n")
-    empty_database_checker()
     usernames = []
     passwords = []
     f = open("login.txt", "r")
@@ -62,23 +60,25 @@ def login():
     login_dict = dict(user_login)
     username = input("Enter username: ")
     password = getpass.getpass("Enter password: ")
+    if not checker(username, password):
+        print("Something wrong happened, you wrote char that cannot be in your password ")
+        login()
     if not username in usernames:
         print("ERROR : Account not in database. ")
         main()
-    if checker(username, password):
-        txt_password = decrypt_password(login_dict[username])
-        if username in login_dict.keys() and txt_password.decode() == password:
-            print("You just logged in ! Hello %s !!! " % (username))
-            exit()
-        else:
-            print("Access Denied\n")
-            login()
+    txt_password = decrypt_password(login_dict[username])
+    if username in login_dict.keys() and txt_password.decode() == password:
+        print("You just logged in ! Hello %s !!! " % (username))
+        exit()
     else:
-        print("Something wrong happened, you wrote char that cannot be in your password ")
+        print("Access Denied\n")
+        login()
 
 def checker(username, password):
-    if ":" in username or ":" in password or " " in username or not password or not username:
+    if ":" in username or ":" in password or " " in username:
         return False
+    if not password or not username:
+        print("ERROR : empty input")
     else:
         return True
 
@@ -114,14 +114,14 @@ def username_is_available(username):
             return False
         else:
             return True
-def empty_database_checker():
+def database_checker():
     if os.path.isfile('./login.txt') == False:
         f = open("login.txt", "x")
-    elif os.stat("login.txt").st_size == 0:
-        print("ERROR ! : Data base empty ... ")
-        main()
-    f.close()
-
+        print("Creating login.txt")
+        f.close()
+    if os.path.isfile('./secret.key') == False:
+        print("Generating key ...")
+        generate_key()
 print(r"""\
 
 Welcome to :
@@ -134,7 +134,6 @@ Welcome to :
 
     "A Very Not Secured Way to Manage Account"
                                                     """)
-if os.path.isfile('./secret.key') == False:
-    generate_key()
 
+database_checker()
 main()
