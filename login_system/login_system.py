@@ -31,7 +31,7 @@ def create_account():
     print("============ Creating account ============ \n")
     username = input("Username : ")
     password = getpass.getpass("Password : ")
-    if len(password) > 30 or len(username) > 16:
+    if len(password) > 30 or len(username) > 16 or len(username) < 4 or len(password) < 4:
         print("ERROR : Password or username too long ")
         create_account()
     if username_is_available(username):
