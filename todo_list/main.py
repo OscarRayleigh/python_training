@@ -1,8 +1,14 @@
 import tkinter as tk
 from tkinter import font
+import os.path
 
 HEIGHT = 550
 WIDTH = 660
+
+if os.path.isfile('./todo.txt') == False:
+    f = open("todo.txt", "x")
+    print("Creating todo.txt")
+
 
 def add_list(action):
     with open('todo.txt', 'a') as f:
