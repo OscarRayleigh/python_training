@@ -94,12 +94,10 @@ def encrypt_password(password):
     key = load_key()
     encoded_password = password.encode()
     f = Fernet(key)
-    encrypted_password = f.encrypt(encoded_password)
-    return encrypted_password
+    encrypted_password = f.encrypt(encoded_password
 
 def decrypt_password(encrypted_password_str):
-    encrypted_password_byte = ast.literal_eval(encrypted_password_str)
-    key = load_key()
+    encrypted_password_byte = ast.literal_eval(encrypted_password_str
     f = Fernet(key)
     decrypted_password = f.decrypt(encrypted_password_byte)
     return decrypted_password
@@ -123,7 +121,6 @@ def database_checker():
         print("Generating key ...")
         generate_key()
 print(r"""\
-
 Welcome to :
           _   _  _______          ____  __
     /\   | \ | |/ ____\ \        / /  \/  |   /\
@@ -131,7 +128,6 @@ Welcome to :
   / /\ \ | . ` |\___ \  \ \/  \/ / | |\/| | / /\ \
  / ____ \| |\  |____) |  \  /\  /  | |  | |/ ____ \
 /_/    \_\_| \_|_____/    \/  \/   |_|  |_/_/    \_\
-
     "A Very Not Secured Way to Manage Account"
                                                     """)
 

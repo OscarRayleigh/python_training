@@ -17,7 +17,7 @@ def guess_the_number():
         if sol < int(user_input):
             print("its actually lower ...")
             tries+=1
-        else:
+        elif sol == int(user_input) :
             didntguess = True
             if tries <= 2*int(int(n)**(1/3)):
                 print("You guessed right in %d times !! GG ! or not ... ? idk i'm just a program lmao" % (tries))
