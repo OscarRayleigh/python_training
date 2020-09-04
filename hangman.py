@@ -1,6 +1,14 @@
-#import random
-word = "COUILLE"
-letters_left = "_"*len(word)
+import random
+
+def find_random_word():
+    f = open("words.txt", "r")
+    all = f.readlines()
+    x = random.randrange(1371)
+    f.close()
+    return all[x].upper()
+
+word = find_random_word()
+letters_left = "_"*(len(word)-1)
 letters_found = []
 letters_not_in_list = []
 attempts = 7
@@ -21,7 +29,7 @@ def update_hangman(user_input, word):
 
 def main():
     is_part_of_word(word)
-#def find_random_word():
+
 def take_input_and_verify():
     rules_ok = False
     while not rules_ok:
@@ -51,7 +59,7 @@ def is_part_of_word(word):
             if user_input not in letters_not_in_list:
                 letters_not_in_list.append(user_input)
             if attempts <= 0:
-                print("You lost !")
+                print("You lost !\nThe word was", word)
                 exit()
             status()
 
