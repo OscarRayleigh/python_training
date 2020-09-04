@@ -1,5 +1,5 @@
 login_system/mypython/
-login_system/secret.key
+login_system/.secret.key
 login_system/login.txt
 .DS_Store
 login_system/.DS_Store
